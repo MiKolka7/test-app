@@ -81,7 +81,7 @@ export const getSources = (filters) => (dispatch) => {
             Cache.set('source', sources);
             dispatchData(sources, GET_SOURCES_SUCCESS);
         })
-        .catch((error) => {
+        .catch(() => {
             // =(
             alert(ALERT_ERROR_LOAD_DATA);
             dispatch({

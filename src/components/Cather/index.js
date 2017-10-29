@@ -15,6 +15,7 @@ export default class Cather extends Component {
     }
 
     componentDidCatch (error, stack) {
+        console.error(error, stack);
         this.setState(() => ({
             error: true
         }));
