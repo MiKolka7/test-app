@@ -61,7 +61,9 @@
         "start": "npm run start-js",
         "test": "node scripts/test.js --env=jsdom",
         "setup": "sh scripts/setup.sh",
-        "build": "node scripts/build.js"
+        "build": "node scripts/build.js",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
     },
     "devDependencies": {
         "babel-preset-stage-0": "^6.24.1",
