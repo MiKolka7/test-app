@@ -1,0 +1,98 @@
+{
+    "categories": [
+        {
+            "name": "business",
+            "value": "business",
+            "sort": 0
+        },
+        {
+            "name": "entertainment",
+            "value": "entertainment",
+            "sort": 1
+        },
+        {
+            "name": "gaming",
+            "value": "gaming",
+            "sort": 2
+        },
+        {
+            "name": "general",
+            "value": "general",
+            "sort": 3
+        },
+        {
+            "name": "music",
+            "value": "music",
+            "sort": 4
+        },
+        {
+            "name": "politics",
+            "value": "politics",
+            "sort": 5
+        },
+        {
+            "name": "science-and-nature",
+            "value": "science-and-nature",
+            "sort": 6
+        },
+        {
+            "name": "sport",
+            "value": "sport",
+            "sort": 7
+        },
+        {
+            "name": "technology",
+            "value": "technology",
+            "sort": 8
+        }
+    ],
+    "languages": [
+        {
+            "name": "en",
+            "value": "en",
+            "sort": 0
+        },
+        {
+            "name": "de",
+            "value": "de",
+            "sort": 1
+        },
+        {
+            "name": "fr",
+            "value": "fr",
+            "sort": 2
+        }
+    ],
+    "countries": [
+        {
+            "name": "au",
+            "value": "au",
+            "sort": 0
+        },
+        {
+            "name": "de",
+            "value": "de",
+            "sort": 1
+        },
+        {
+            "name": "gb",
+            "value": "gb",
+            "sort": 2
+        },
+        {
+            "name": "in",
+            "value": "in",
+            "sort": 3
+        },
+        {
+            "name": "it",
+            "value": "it",
+            "sort": 4
+        },
+        {
+            "name": "us",
+            "value": "us",
+            "sort": 5
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+.selectBox {
+
+}
+
+.select {
+    width: 100%;
+    height: 30px;
+}
+
+.labelList {
+    padding: 0;
+
+    li {
+        display: inline-block;
+        margin: 3px;
+        padding: 5px 10px;
+        background: #eee;
+        cursor: pointer;
+
+        &:hover {
+            background: darken(#eee, 3);
+        }
+
+        &:before {
+            content: '×';
+            margin-right: 5px;
+        }
+    }
+}
