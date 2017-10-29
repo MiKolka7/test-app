@@ -5,6 +5,7 @@ import {
     GET_SOURCES_FROM_CACHE,
     GET_SOURCES_SUCCESS
 } from '../constants/actionTypes';
+import { ALERT_ERROR_LOAD_DATA } from '../constants/global';
 import Api from '../services/Api';
 import Cache from '../services/Cache';
 
@@ -44,6 +45,15 @@ function createFilter (filters, list) {
     ];
 }
 
+function prepareSources (list) {
+    return list.map((item) => {
+        const urlPart = item.url.split('//')[1];
+        const logo = `https://icons.better-idea.org/icon?url=${urlPart}&size=120..120..200`;
+
+        return { ...item, logo };
+    });
+}
+
 export const getSources = (filters) => (dispatch) => {
     const list = Cache.get('source');
     const dispatchData = (data, eventType) => {
@@ -66,20 +76,23 @@ export const getSources = (filters) => (dispatch) => {
 
     Api.getSources()
         .then((data) => {
-            Cache.set('source', data);
-            dispatchData(data, GET_SOURCES_SUCCESS);
+            const sources = prepareSources(data);
+
+            Cache.set('source', sources);
+            dispatchData(sources, GET_SOURCES_SUCCESS);
         })
         .catch((error) => {
-            console.log(error);
+            // =(
+            alert(ALERT_ERROR_LOAD_DATA);
             dispatch({
                 type:    GET_SOURCES_ERROR,
                 error:   true,
-                payload: new Error('Помилка завантаження даних, спробуйте ще раз!')
+                payload: new Error(ALERT_ERROR_LOAD_DATA)
             });
         });
 };
 
-export const filterSources = (filters, newEl, type, param) => (dispatch) => {
+export const filterSources = ({ list: sourceList, filters }, newEl, type, param) => (dispatch) => {
     if (!param) {
         return;
     }
@@ -97,8 +110,17 @@ export const filterSources = (filters, newEl, type, param) => (dispatch) => {
         // filters[index].params.push(param);
     }
 
+    const listAfterFilters = sourceList.filter((source) =>
+        !filters.some(({ selected: sel, type: filterType }) => (
+            !sel.length ? false : sel.indexOf(source[filterType])) === -1
+        )
+    );
+
     dispatch({
         type:    FILTER_SOURCES,
-        payload: [...filters]
+        payload: {
+            filters: [...filters],
+            listAfterFilters
+        }
     });
 };

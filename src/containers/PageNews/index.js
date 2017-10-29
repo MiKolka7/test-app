@@ -7,11 +7,12 @@ import cx from 'classnames';
 import { func, object } from 'prop-types';
 import Styles from './styles.scss';
 import Pagination from '../../components/Pagination';
-import SourceList from '../../components/SourceList';
 import { getNews } from '../../actions/NewsActions';
 import { getSources } from '../../actions/SourcesActions';
-import NewsList from '../../components/NewsList';
 import Preloader from '../../components/Preloader';
+import Source from '../../components/Source';
+import News from '../../components/News';
+import Cather from '../../components/Cather';
 
 class PageNews extends Component {
     static propTypes = {
@@ -74,7 +75,9 @@ class PageNews extends Component {
         }
 
         return (
-            <nav className = { Styles.filterList }>{ filterList }</nav>
+            <nav className = { Styles.filterList }>
+                Sort by: { filterList }
+            </nav>
         );
     }
 
@@ -85,44 +88,55 @@ class PageNews extends Component {
             return newObj[sourceName].filter(check)[0];
         }
 
-        return {};
+        return {
+            list: []
+        };
     }
 
     render () {
         const { sortBy } = this.state;
         const { location } = this.props;
-        const { list: sourceList, filters: sourceFilters } = this.props.source;
+        const { list: sourcesList, listAfterFilters } = this.props.source;
         const { list: newsObj } = this.props.news;
         const sourceName = this._getSelectedSource(location);
 
         const news = this._getNews(newsObj, sourceName, sortBy);
         const newsFilters = this._renderNewsFilters(newsObj, sourceName, sortBy || news.sortBy);
 
+        const sources = listAfterFilters.length ? listAfterFilters : sourcesList;
+        const sourceList = sources.map((source) => (
+            <Source key = { source.id } { ...source } isSelected = { source.id === sourceName } />
+        ));
+
+        const newsList = news.list.map((item) => (
+            <News key = { item.title + item.publishedAt } { ...item } />
+        ));
+
         return (
             <div className = { Styles.page }>
-                <section className = { Styles.column }>
-                    <a href = '#/'>Home</a>
+                <section className = { cx(Styles.column, Styles.aside) }>
+                    <nav className = { Styles.asideNav }>
+                        <a href = '#/'>Home</a>
+                    </nav>
                     { sourceList.length
-                        ? <Pagination
-                            classContainer = { Styles.column }
-                            pageSize = { 16 }>
-                            <SourceList
-                                filters = { sourceFilters }
-                                list = { sourceList }
-                                selected = { sourceName }
-                            />
-                        </Pagination>
+                        ? <Cather>
+                            <Pagination classContainer = { Styles.column } pageSize = { 6 }>
+                                { sourceList }
+                            </Pagination>
+                        </Cather>
                         : <Preloader />
                     }
                 </section>
                 <main className = { cx(Styles.column, Styles.columnArticles) }>
                     <header className = { Styles.header }>{ newsFilters }</header>
-                    { news.list && news.list.length
-                        ? <Pagination
-                            classContainer = { cx(Styles.column, Styles.hFlexStart) }
-                            pageSize = { 6 }>
-                            <NewsList list = { news.list } />
-                        </Pagination>
+                    { newsList.length
+                        ? <Cather>
+                            <Pagination
+                                classContainer = { cx(Styles.column, Styles.hFlexStart) }
+                                pageSize = { 6 }>
+                                { newsList }
+                            </Pagination>
+                        </Cather>
                         : <Preloader />
                     }
                 </main>

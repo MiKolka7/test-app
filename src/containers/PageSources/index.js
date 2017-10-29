@@ -7,9 +7,10 @@ import { func, object } from 'prop-types';
 import Styles from './styles.scss';
 import Pagination from '../../components/Pagination';
 import AsideBar from '../../components/AsideBar';
-import SourceList from '../../components/SourceList';
 import { filterSources, getSources } from '../../actions/SourcesActions';
 import Preloader from '../../components/Preloader';
+import Source from '../../components/Source';
+import Cather from '../../components/Cather';
 
 class PageSources extends Component {
     static propTypes = {
@@ -31,28 +32,39 @@ class PageSources extends Component {
     }
 
     _onFilter (newEl, type, val) {
-        const { filters } = this.props.source;
+        const { source } = this.props;
 
-        this.props.filterSources(filters, newEl, type, val);
+        this.props.filterSources(source, newEl, type, val);
     }
 
     render () {
-        const { list, filters } = this.props.source;
+        const { list, listAfterFilters, filters } = this.props.source;
+        const sources = listAfterFilters.length ? listAfterFilters : list;
+
+        const sourceList = sources.map((source) => (
+            <Source key = { source.id } { ...source } />
+        ));
 
         return (
             <div className = { Styles.page }>
-                <AsideBar filters = { filters } onFilter = { this.onFilter } />
+                <Cather>
+                    <AsideBar filters = { filters } onFilter = { this.onFilter } />
+                </Cather>
                 <main className = { Styles.column }>
-                    { list.length
-                        ? <Pagination
-                            classContainer = { Styles.column }
-                            pageCount = { list.length }
-                            pageSize = { 6 }>
-                            <SourceList filters = { filters } list = { list } />
-                        </Pagination>
+                    { sources.length
+                        ? <Cather>
+                            <Pagination classContainer = { Styles.column } pageSize = { 6 }>
+                                {sourceList}
+                            </Pagination>
+                        </Cather>
                         : <Preloader />
                     }
                 </main>
+                {/*<SourceList
+                    filters = { filters }
+                    list = { list }
+                    range = { [start, end] }
+                />*/}
             </div>
 
         );

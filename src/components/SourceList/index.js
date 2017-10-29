@@ -6,13 +6,14 @@ import { ALERT_EMPTY_LIST } from '../../constants/global';
 
 export default class SourceList extends Component {
     static propTypes = {
-        list:     array.isRequired,
-        filters:  array,
-        selected: string
+        list:      array.isRequired,
+        filters:   array,
+        range:     array,
+        selected:  string
     };
 
     render () {
-        const { list, filters, selected } = this.props;
+        const { list, filters, selected, range = [0, list.length] } = this.props;
 
         const sourceList = list
             .filter((source) =>
@@ -20,6 +21,7 @@ export default class SourceList extends Component {
                     !sel.length ? false : sel.indexOf(source[type])) === -1
                 )
             )
+            .filter((item, i) => i >= range[0] && i < range[1])
             .map(({ id, name, url, description }) => {
                 const urlPart = url.split('//')[1];
                 const logo = `https://icons.better-idea.org/icon?url=${urlPart}&size=120..120..200`;
@@ -31,8 +33,6 @@ export default class SourceList extends Component {
                 );
             });
 
-        const listOrAlert = list && sourceList.length ? [sourceList] : [ALERT_EMPTY_LIST];
-
-        return listOrAlert;
+        return list && sourceList.length ? [sourceList] : [ALERT_EMPTY_LIST];
     }
 }

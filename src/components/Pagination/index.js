@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
 import range from 'lodash/range';
-import { number, object, string } from 'prop-types';
+import { array, number, string } from 'prop-types';
 import Styles from './style.scss';
 
 export default class Pagination extends Component {
     static propTypes = {
-        children:       object.isRequired,
+        children:       array.isRequired,
         pageSize:       number.isRequired,
         classContainer: string
     };
@@ -32,8 +32,8 @@ export default class Pagination extends Component {
         const { selectCurrentPage } = this.state;
 
         const childrenArr = React.Children.toArray(children);
-        const pageCount = Math.round(childrenArr.length / pageSize);
         const content = childrenArr.slice((selectCurrentPage - 1) * pageSize, selectCurrentPage * pageSize);
+        const pageCount = Math.round(childrenArr.length / pageSize);
 
         const list = range(1, pageCount + 1).map((item) => (
             <li
@@ -45,11 +45,11 @@ export default class Pagination extends Component {
         ));
 
         return (
-            <div style = { { width: '100%' } }>
+            <div style = { { flex: 1, width: '100%' } }>
                 <div className = { classContainer }>
                     { content }
                 </div>
-                <ul className = { Styles.pagination }>{ list }</ul>
+                {list.length > 1 ? <ul className = { Styles.pagination }>{ list }</ul> : null}
             </div>
         );
     }

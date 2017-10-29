@@ -6,9 +6,10 @@ import {
 } from '../constants/actionTypes';
 
 const initialState = {
-    list:     [],
-    fetching: false,
-    filters:  []
+    list:             [],
+    fetching:         false,
+    filters:          [],
+    listAfterFilters: []
 };
 
 const source = (state = initialState, action) => {
@@ -29,7 +30,8 @@ const source = (state = initialState, action) => {
         case FILTER_SOURCES:
             return {
                 ...state,
-                filters: action.payload
+                filters:          action.payload.filters,
+                listAfterFilters: action.payload.listAfterFilters
             };
 
         default:
