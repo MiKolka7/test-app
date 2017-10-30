@@ -1,6 +1,7 @@
 .tile {
     position: relative;
     width: 30.33%;
+    min-width: 250px;
 
     display: flex;
     flex-direction: column;

@@ -122,7 +122,7 @@ class PageNews extends Component {
                         </nav>
                         { sourceList.length
                             ? <Cather>
-                                <Pagination classContainer = { Styles.column } pageSize = { 6 }>
+                                <Pagination classContainer = { cx(Styles.column, Styles.asideList) } pageSize = { 6 }>
                                     { sourceList }
                                 </Pagination>
                             </Cather>
@@ -137,7 +137,7 @@ class PageNews extends Component {
                         { newsList.length
                             ? <Cather>
                                 <Pagination
-                                    classContainer = { cx(Styles.column, Styles.hFlexStart) }
+                                    classContainer = { cx(Styles.column, Styles.news) }
                                     pageSize = { 6 }>
                                     { newsList }
                                 </Pagination>
