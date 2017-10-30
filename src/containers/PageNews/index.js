@@ -13,6 +13,7 @@ import Preloader from '../../components/Preloader';
 import Source from '../../components/Source';
 import News from '../../components/News';
 import Cather from '../../components/Cather';
+import { ALERT_ERROR_LOAD_NEWS, ALERT_ERROR_LOAD_SOURCE } from '../../constants/global';
 
 class PageNews extends Component {
     static propTypes = {
@@ -96,8 +97,8 @@ class PageNews extends Component {
     render () {
         const { sortBy } = this.state;
         const { location } = this.props;
-        const { list: sourcesList, listAfterFilters } = this.props.source;
-        const { list: newsObj } = this.props.news;
+        const { list: sourcesList, listAfterFilters, error: errorLoadSource } = this.props.source;
+        const { list: newsObj, error: errorLoadNews } = this.props.news;
         const sourceName = this._getSelectedSource(location);
 
         const news = this._getNews(newsObj, sourceName, sortBy);
@@ -114,32 +115,38 @@ class PageNews extends Component {
 
         return (
             <div className = { Styles.page }>
-                <section className = { cx(Styles.column, Styles.aside) }>
-                    <nav className = { Styles.asideNav }>
-                        <a href = '#/'>Home</a>
-                    </nav>
-                    { sourceList.length
-                        ? <Cather>
-                            <Pagination classContainer = { Styles.column } pageSize = { 6 }>
-                                { sourceList }
-                            </Pagination>
-                        </Cather>
-                        : <Preloader />
-                    }
-                </section>
-                <main className = { cx(Styles.column, Styles.columnArticles) }>
-                    <header className = { Styles.header }>{ newsFilters }</header>
-                    { newsList.length
-                        ? <Cather>
-                            <Pagination
-                                classContainer = { cx(Styles.column, Styles.hFlexStart) }
-                                pageSize = { 6 }>
-                                { newsList }
-                            </Pagination>
-                        </Cather>
-                        : <Preloader />
-                    }
-                </main>
+                { !errorLoadSource ?
+                    <section className = { cx(Styles.column, Styles.aside) }>
+                        <nav className = { Styles.asideNav }>
+                            <a href = '#/'>Home</a>
+                        </nav>
+                        { sourceList.length
+                            ? <Cather>
+                                <Pagination classContainer = { Styles.column } pageSize = { 6 }>
+                                    { sourceList }
+                                </Pagination>
+                            </Cather>
+                            : <Preloader />
+                        }
+                    </section>
+                    : ALERT_ERROR_LOAD_SOURCE
+                }
+                { !errorLoadNews
+                    ? <main className = { cx(Styles.column, Styles.columnArticles) }>
+                        <header className = { Styles.header }>{ newsFilters }</header>
+                        { newsList.length
+                            ? <Cather>
+                                <Pagination
+                                    classContainer = { cx(Styles.column, Styles.hFlexStart) }
+                                    pageSize = { 6 }>
+                                    { newsList }
+                                </Pagination>
+                            </Cather>
+                            : <Preloader />
+                        }
+                    </main>
+                    : ALERT_ERROR_LOAD_NEWS
+                }
             </div>
         );
     }

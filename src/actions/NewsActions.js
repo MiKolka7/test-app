@@ -1,5 +1,4 @@
 import { GET_NEWS_ERROR, GET_NEWS_FETCH, GET_NEWS_FROM_CACHE, GET_NEWS_SUCCESS } from '../constants/actionTypes';
-import { ALERT_ERROR_LOAD_DATA } from '../constants/global';
 import Api from '../services/Api';
 import Cache from '../services/Cache';
 
@@ -50,12 +49,8 @@ export const getNews = (sourceName, newsState) => (dispatch) => {
     Api.getNews(sourceName)
         .then(prepareData)
         .catch(() => {
-            // =(
-            alert(ALERT_ERROR_LOAD_DATA);
             dispatch({
-                type:    GET_NEWS_ERROR,
-                error:   true,
-                payload: new Error(ALERT_ERROR_LOAD_DATA)
+                type: GET_NEWS_ERROR
             });
         });
 };

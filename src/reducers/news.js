@@ -1,9 +1,10 @@
-import { GET_NEWS_FETCH, GET_NEWS_FROM_CACHE, GET_NEWS_SUCCESS } from '../constants/actionTypes';
+import { GET_NEWS_ERROR, GET_NEWS_FETCH, GET_NEWS_FROM_CACHE, GET_NEWS_SUCCESS } from '../constants/actionTypes';
 
 const initialState = {
     fetching: false,
     filters:  ['top', 'latest', 'popular'],
-    list:     {}
+    list:     {},
+    error:    false
 };
 
 const news = (state = initialState, action) => {
@@ -12,13 +13,21 @@ const news = (state = initialState, action) => {
             return { ...state, fetching: true };
 
         case GET_NEWS_SUCCESS:
-        case GET_NEWS_FROM_CACHE: {
+        case GET_NEWS_FROM_CACHE:
             return {
                 ...state,
                 list:     action.payload.list,
-                fetching: false
+                fetching: false,
+                error:    false
             };
-        }
+
+        case GET_NEWS_ERROR:
+            return {
+                ...state,
+                error:    true,
+                fetching: true
+            };
+
         default:
             return state;
     }

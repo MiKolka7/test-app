@@ -11,6 +11,7 @@ import { filterSources, getSources } from '../../actions/SourcesActions';
 import Preloader from '../../components/Preloader';
 import Source from '../../components/Source';
 import Cather from '../../components/Cather';
+import { ALERT_ERROR_LOAD_SOURCE } from '../../constants/global';
 
 class PageSources extends Component {
     static propTypes = {
@@ -38,7 +39,7 @@ class PageSources extends Component {
     }
 
     render () {
-        const { list, listAfterFilters, filters } = this.props.source;
+        const { list, listAfterFilters, filters, error } = this.props.source;
         const sources = listAfterFilters.length ? listAfterFilters : list;
 
         const sourceList = sources.map((source) => (
@@ -46,27 +47,23 @@ class PageSources extends Component {
         ));
 
         return (
-            <div className = { Styles.page }>
-                <Cather>
-                    <AsideBar filters = { filters } onFilter = { this.onFilter } />
-                </Cather>
-                <main className = { Styles.column }>
-                    { sources.length
-                        ? <Cather>
-                            <Pagination classContainer = { Styles.column } pageSize = { 6 }>
-                                {sourceList}
-                            </Pagination>
-                        </Cather>
-                        : <Preloader />
-                    }
-                </main>
-                {/*<SourceList
-                    filters = { filters }
-                    list = { list }
-                    range = { [start, end] }
-                />*/}
-            </div>
-
+            !error
+                ? <div className = { Styles.page }>
+                    <Cather>
+                        <AsideBar filters = { filters } onFilter = { this.onFilter } />
+                    </Cather>
+                    <main className = { Styles.column }>
+                        { sources.length
+                            ? <Cather>
+                                <Pagination classContainer = { Styles.column } pageSize = { 6 }>
+                                    { sourceList }
+                                </Pagination>
+                            </Cather>
+                            : <Preloader />
+                        }
+                    </main>
+                </div>
+                : ALERT_ERROR_LOAD_SOURCE
         );
     }
 }

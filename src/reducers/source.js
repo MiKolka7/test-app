@@ -1,5 +1,6 @@
 import {
     FILTER_SOURCES,
+    GET_SOURCES_ERROR,
     GET_SOURCES_FETCH,
     GET_SOURCES_FROM_CACHE,
     GET_SOURCES_SUCCESS
@@ -8,6 +9,7 @@ import {
 const initialState = {
     list:             [],
     fetching:         false,
+    error:            false,
     filters:          [],
     listAfterFilters: []
 };
@@ -24,7 +26,15 @@ const source = (state = initialState, action) => {
                 list:     action.payload.list,
                 filters:  action.payload.filters,
                 cached:   action.payload.list,
-                fetching: false
+                fetching: false,
+                error:    false
+            };
+
+        case GET_SOURCES_ERROR:
+            return {
+                ...state,
+                fetching: false,
+                error:    true
             };
 
         case FILTER_SOURCES:

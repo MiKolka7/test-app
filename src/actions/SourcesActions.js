@@ -5,7 +5,6 @@ import {
     GET_SOURCES_FROM_CACHE,
     GET_SOURCES_SUCCESS
 } from '../constants/actionTypes';
-import { ALERT_ERROR_LOAD_DATA } from '../constants/global';
 import Api from '../services/Api';
 import Cache from '../services/Cache';
 
@@ -82,12 +81,8 @@ export const getSources = (filters) => (dispatch) => {
             dispatchData(sources, GET_SOURCES_SUCCESS);
         })
         .catch(() => {
-            // =(
-            alert(ALERT_ERROR_LOAD_DATA);
             dispatch({
-                type:    GET_SOURCES_ERROR,
-                error:   true,
-                payload: new Error(ALERT_ERROR_LOAD_DATA)
+                type: GET_SOURCES_ERROR
             });
         });
 };
